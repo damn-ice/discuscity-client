@@ -1,4 +1,5 @@
 body {
+  background-color: #4D4D4D;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -10,4 +11,92 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+small {
+  font-size: 10px;
+  margin-left: 10px;
+}
+
+/* input {
+  width: 100%;
+  height: 40px
+} */
+.relative { 
+  position: relative;
+}
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  padding: 12px 16px;
+  margin: 8px;
+  background-color: #707070;
+  border-radius: 20px;
+  border: 2px solid black;
+}
+
+.chat-title{
+  margin-top: 0;
+  margin-bottom: 40px;
+  padding-bottom: 40px;
+  padding-top: 0;
+  text-align: left;
+  position: fixed;
+  background-color: #332F2E;
+  z-index: 50;
+  border-radius: 20px;
+}
+
+.chat-flex{
+  display: flex;
+  justify-content: space-between;
+}
+
+/*  */
+
+.chat-content {
+  padding-top: 60px;
+}
+
+.emotions {
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  border-radius: 50%;
+  background-color: #707070;
+  top: 100%;
+  left: 90%;
+}
+
+.chat-content .card{
+  margin-bottom: 30px;
+}
+
+.form-control {
+  width: 100%;
+}
+
+.form-control input{
+  width: 80%;
+  height: 30px;
+}
+.pix {
+  margin-right: 10px;
+} 
+
+.topic-link {
+  word-wrap: break-word;
+  width: 80%;
+  text-align: left;
+}
+
+@media (max-width: 768px){
+  .form-control input{
+    width: 60%;
+    height: 25px;
+  }
+  .form-control button {
+    font-size: 50%;
+    width: 50px;
+  }
 }
