@@ -22,6 +22,11 @@ small {
   width: 100%;
   height: 40px
 } */
+
+.red {
+  color: red;
+}
+
 .relative { 
   position: relative;
 }
@@ -32,6 +37,14 @@ small {
   background-color: #707070;
   border-radius: 20px;
   border: 2px solid black;
+}
+.card.form {
+  max-width: 400px;
+  border: 1px solid white;
+  border-radius: 5px;
+  padding: 10px auto;
+  text-align: initial;
+  margin: auto;
 }
 
 .chat-title{
@@ -88,6 +101,14 @@ small {
   word-wrap: break-word;
   width: 80%;
   text-align: left;
+}
+
+.center {
+  text-align: center;
+}
+
+.pointer {
+  cursor: pointer;
 }
 
 @media (max-width: 768px){
