@@ -5,6 +5,7 @@ import { Link, useHistory } from "react-router-dom";
 import { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useForm } from "react-hook-form";
+import { useUser } from "../context/UserProvider";
 
 
 const useStyles = makeStyles(theme => ({
@@ -20,6 +21,8 @@ const useStyles = makeStyles(theme => ({
 const Login = () => {
     const classes = useStyles();
 
+    const {url, setUser, setCookie } = useUser();
+
     const [ err, setErr] = useState(null);
 
     const {register, handleSubmit, formState: { errors }, reset} = useForm();
@@ -31,12 +34,15 @@ const Login = () => {
     }
 
     const onSubmit = async (data, e) => {
-        const req = await fetch('http://localhost:8000/api/login', {
+        const req = await fetch(`${url}/login`, {
             method: "POST",
             headers: {"Content-Type": "application/json"},
+            credentials: 'include',
             body: JSON.stringify(data)
         })
         const res = await req.json();
+        console.log(res);
+        console.log(req);
         reset('', {
             keepValues: false,
         })
@@ -46,7 +52,10 @@ const Login = () => {
         }else {
             // useUser context function to set user on app...
             setErr(null);
-            console.log(res);
+            setUser(res);
+            setCookie(document.cookie.split('=')[1])
+            // console.log(document.cookie)
+
             // if previous page was register... history.push(/)
             history.location.state? history.push('/'): history.goBack();
         }

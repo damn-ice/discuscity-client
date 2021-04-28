@@ -6,6 +6,7 @@ import { Link, useHistory } from "react-router-dom";
 import { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useForm } from "react-hook-form";
+import { useUser } from "../context/UserProvider";
 
 
 const useStyles = makeStyles(theme => ({
@@ -20,6 +21,8 @@ const useStyles = makeStyles(theme => ({
 
 const Register = () => {
     const classes = useStyles();
+
+    const { url } = useUser();
 
     const [ err, setErr] = useState(null);
 
@@ -36,7 +39,7 @@ const Register = () => {
 
     const onSubmit = async (data, e) => {
         
-    const req = await fetch('http://localhost:8000/api/register', {
+    const req = await fetch(`${url}/register`, {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(data)

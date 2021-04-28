@@ -8,31 +8,29 @@ const useFetch = (url) => {
 
     useEffect(() => {
         const abortFetch = new AbortController();
-        setTimeout(() => {
-            const getData = async () => {
-                try {
-                    const res = await fetch(url, {signal: abortFetch.signal})
-                    if (!res.ok){
-                        throw Error("Couldn't get resources!")
-                    }
-                    const data = await res.json();
-                    setData(data);
-                    setIsPending(false);
-                    setErr(null);
+        const getData = async () => {
+            try {
+                const res = await fetch(url, {signal: abortFetch.signal})
+                if (!res.ok){
+                    throw Error("Couldn't get resources!")
                 }
-                catch (err) {
-                    if (err.name === 'AbortError'){
-                        console.log('Fetch Cancelled!')
-                    }else {
-                        setIsPending(false);
-                        setData(null);
-                        setErr(err.message);
-                    }
-                    
-                }
+                const data = await res.json();
+                setData(data);
+                setIsPending(false);
+                setErr(null);
             }
-            getData();
-        }, 1000)
+            catch (err) {
+                if (err.name === 'AbortError'){
+                    console.log('Fetch Cancelled!')
+                }else {
+                    setIsPending(false);
+                    setData(null);
+                    setErr(err.message);
+                }
+                
+            }
+        }
+        getData();
         return () => {
             setIsPending(true);
             setData(null);

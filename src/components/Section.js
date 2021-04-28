@@ -3,11 +3,14 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useUser } from '../context/UserProvider';
 
 
 const Section = ({ section, active, listRoot }) => {
 
     // const endPoints = ['home', 'politics', 'romance', 'business', 'importation', 'joel'];
+
+    const { url } = useUser();
 
     const currentSession = window.location.pathname.split('/')[1].toLowerCase()
 
@@ -18,14 +21,14 @@ const Section = ({ section, active, listRoot }) => {
 
     useEffect(() => {
         const getEndPoints = async () => {
-            const res = await fetch('http://localhost:8000/api')
+            const res = await fetch(url)
             const data = await res.json()
             const result = data.map(endPoint => endPoint.name)
             setEndPoints(result)
         }
         getEndPoints()
         
-    }, [])
+    }, [url])
 
     useEffect(() => {
         if (!currentSession) {

@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import Badge from '@material-ui/core/Badge';
 import SendIcon from '@material-ui/icons/Send';
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
@@ -6,22 +6,25 @@ import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissa
 import { Button } from "@material-ui/core";
 import { useCallback, useEffect, useState } from "react";
 import Name from "./Name";
+import { useUser } from "../context/UserProvider";
 
 
 const Chat = () => {
+    const { url, user, cookie } = useUser();
     const { section , id } = useParams();
     const [data, setData] = useState(null);
     const [isPending, setIsPending] = useState(true);
     const [err, setErr] = useState(null);
     const [text, setText] = useState('');
-    const url = `http://localhost:7000/${section}/${id}`;
+    const history = useHistory();
+    // const url = `http://localhost:7000/${section}/${id}`;
 
     useEffect(() => {
         const abortFetch = new AbortController();
         setTimeout(() => {
             const getData = async () => {
                 try {
-                    const res = await fetch(url, {signal: abortFetch.signal})
+                    const res = await fetch(`${url}/section/${section}/${id}`, {signal: abortFetch.signal})
                     if (!res.ok){
                         throw Error("Couldn't get resources!")
                     }
@@ -49,46 +52,45 @@ const Chat = () => {
             setErr(null);
             abortFetch.abort();
         }
-    }, [url])
+    }, [url, id, section])
+
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (!user) {
+            history.push('/login')
+        } else {
+            const post = {           
+                message: text,
+                date: new Date(),
+            }
+            const req = await fetch(`${url}/section/${section}/${id}/`, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": cookie,
+                },
+                credentials: 'include',
+                body: JSON.stringify(post)
+            })
+            const result = await req.json();
+            setText('');
+            setData(result);
+        }
+    }
 
     /*
     * We're going to put sendMessage as a dependecy in the array...
+    *               OR
+    * click on submitting button should trigger a scrollinto view...
     */ 
+    
     const viewRef = useCallback( node => {
         // Move the form into view
         if (node) {
             node.scrollIntoView({smooth: true})
         }
-    }, [])
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        // setData(null);
-        // setIsPending(true);
-        const post = {
-            sender: 'damn-ice',
-            message: text,
-            likes: [],
-            dislikes: [],
-            time: new Date(),
-        }
-
-        const body = {
-            title: data.title,
-            posts: [...data.posts, post],
-            id: data.id
-        }
-
-        const res = await fetch(`http://localhost:7000/${section}/${id}`, {
-            method: 'PUT',
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(body)
-        })
-
-        const result = await res.json();
-        setText('');
-        setData(result);
-    }
+    }, [handleSubmit])
 
     const handleEmotion = async (e, index) => {
         const emotion = e.target.closest('.emotion').dataset.emotion;
@@ -178,7 +180,7 @@ const Chat = () => {
                                         <div className='topic-link' >
                                             {/* <span style={ {color: color[randomGen(color)], fontWeight: 'bold'}} onLoad={console.log(initialRender)} >{post.sender}</span> --  */}
                                             <Name sender={post.sender} />
-                                             <small>{formatDate(post.time)}</small>
+                                             <small>{formatDate(post.date)}</small>
                                             <p>{post.message}</p>
                                             <div className="emotions">
                                                 <Badge badgeContent={post.likes.length} aria-label="toggle likes" color="primary" data-emotion="likes" className='emotion' onClick={(e) => handleEmotion(e, index)} >

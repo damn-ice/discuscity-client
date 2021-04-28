@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -8,7 +8,6 @@ import InputBase from '@material-ui/core/InputBase';
 import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
@@ -25,9 +24,6 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: 'black',
     zIndex: 1000,
   },
-  // menuButton: {
-  //   marginRight: theme.spacing(2),
-  // },
   title: {
     display: 'block',
     marginRight: theme.spacing(8),
@@ -87,8 +83,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Navbar() {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -172,14 +168,6 @@ export default function Navbar() {
     <div className={classes.grow}>
       <AppBar position="fixed" className={classes.apps}>
         <Toolbar>
-          {/* <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="open drawer"
-          >
-            <MenuIcon />
-          </IconButton> */}
           <Typography className={classes.title} variant="h6" noWrap >
             Discuscity
           </Typography>
