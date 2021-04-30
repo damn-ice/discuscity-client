@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
 const Register = () => {
     const classes = useStyles();
 
-    const { url } = useUser();
+    const { url, user } = useUser();
 
     const [ err, setErr] = useState(null);
 
@@ -36,6 +36,8 @@ const Register = () => {
     const handleVisibility = e => {
         setVisible(!visible)
     }
+    // if logged in go back...
+    user && history.goBack();
 
     const onSubmit = async (data, e) => {
         

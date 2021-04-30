@@ -98,9 +98,11 @@ const Chat = () => {
         let newLikes = selectedPost.likes;
         let newDislikes = selectedPost.dislikes;
         if (emotion === 'likes'){
+            // if it doesn't contain current user like...
             if (!newLikes.includes(selectedPost.sender)){
                 newLikes = [...newLikes, selectedPost.sender]
                 newDislikes = selectedPost.dislikes.filter(dislike => dislike !== selectedPost.sender);
+            // if it does contain current user like...
             }else {
                 newLikes = selectedPost.likes.filter(like => like !== selectedPost.sender);
                 newDislikes = [...selectedPost.dislikes]
@@ -135,6 +137,23 @@ const Chat = () => {
         setData(result);    
         // console.log({newLikes});
         // console.log({newDislikes});
+
+        /*
+            * Possible Implementation
+            *
+            * if(!user) history.push('/login');
+            * else{
+            *   update the UI
+            *   set flag to true if contradicting emotion has to be removed on the DB
+            *   send the emotion to the backend as a post
+            *   if the emotion is created it should carry along a flag that determines if...
+            *   ... the opposing emotion should be deleted
+            *   if the emotion is to be deleted the flag will not be send the emotion...
+            *   ... is simply deleted
+            *   backend return backs a success
+            * }
+
+        */ 
     }
 
     const formatDate = date => {

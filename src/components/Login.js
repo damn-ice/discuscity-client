@@ -18,10 +18,11 @@ const useStyles = makeStyles(theme => ({
     }
 ))
 
+
 const Login = () => {
     const classes = useStyles();
 
-    const {url, setUser, setCookie } = useUser();
+    const {url, setUser, setCookie, user } = useUser();
 
     const [ err, setErr] = useState(null);
 
@@ -32,6 +33,8 @@ const Login = () => {
     const handleVisibility = e => {
         setVisible(!visible)
     }
+
+    user && history.goBack();
 
     const onSubmit = async (data, e) => {
         const req = await fetch(`${url}/login`, {
@@ -127,3 +130,4 @@ const Login = () => {
 export default Login
 
 // react1: !15rfbDIIItg
+// react-moz: Reactmoz!1

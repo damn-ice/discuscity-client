@@ -24,8 +24,8 @@ const useStyles = makeStyles(theme => ({
 
         backgroundColor: '#332F2E',
         display: 'flex',
+        position: 'fixed',
         [theme.breakpoints.up('sm')]: {
-            position: 'fixed',
             flexDirection: 'column',
             overflow: 'auto',
             borderRadius: '0 0 20% 0',
