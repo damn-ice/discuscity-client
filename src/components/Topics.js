@@ -10,6 +10,30 @@ const Topics = () => {
     const { url } = useUser();
 
     const { data, isPending, err } = useFetch(`${url}/section/${section}`)
+
+
+    // Ensure this implementation of search only works on home and section route,...
+    /** Topic Provider
+     * const [ topics, setTopics] = useState(null);
+     * if (!section) i.e home {
+     *  const {data} = useFetch(' isFront url')
+     * } else {
+     *  const {data} = useFetch(' normal section url')
+     * }
+     * setTopic(data)
+     * value = {topics, setTopics}
+     * TopicsContext.provider value={value}
+     * */ 
+
+    /**
+     * On the navbar search...
+     * const {setTopic} = useTopics
+     * onChange for search ... setTopic(topics => topics.map(
+     *  topic => (
+     *      topic.id.includes(e.target.value)
+     *  )
+     * ))
+     * */ 
     
 
     /**

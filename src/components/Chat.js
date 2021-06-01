@@ -4,9 +4,10 @@ import SendIcon from '@material-ui/icons/Send';
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
 import { Button } from "@material-ui/core";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Name from "./Name";
 import { useUser } from "../context/UserProvider";
+import io from 'socket.io-client';
 
 
 const Chat = () => {
@@ -16,8 +17,42 @@ const Chat = () => {
     const [isPending, setIsPending] = useState(true);
     const [err, setErr] = useState(null);
     const [text, setText] = useState('');
+    const [socket, setSocket] = useState(null);
     const history = useHistory();
-    // const url = `http://localhost:7000/${section}/${id}`;
+    const room = window.location.pathname.toLowerCase();
+
+     // connect to the server socket and join room...
+    useEffect(() => {
+        // anyone who joins the chat will also get message irrespective of if logged in...
+        // if (!user) return;
+        const newSocket = io('http://localhost:8000')
+        newSocket.emit('join', room)
+        setSocket(newSocket)
+        // close connection if unmounted...
+        return () => newSocket.close()
+    }, [room])
+
+    // socket receive message handler...
+    useEffect(() => {
+        if (socket == null) return;
+        socket.on('receive-msg', (message) => {
+            setData(message.msg)
+        })
+        return () => socket.off('receive-msg')
+    }, [socket])
+
+    // socket emotion receive handler...
+    useEffect(() => {
+        if (socket == null) return;
+        socket.on('receive-emotion', (emotion) => {
+            setData(data => (
+                    {...data, posts: data.posts.map((post, i) => (
+                        emotion.index === i ? emotion.post: post 
+                    ))}
+                ))
+        })
+        return () => socket.off('receive-emotion')
+    }, [socket])
 
     useEffect(() => {
         const abortFetch = new AbortController();
@@ -74,6 +109,8 @@ const Chat = () => {
                 body: JSON.stringify(post)
             })
             const result = await req.json();
+            // emit message to everyone currently in the room...
+            socket.emit('sendMsg', {result, room})
             setText('');
             setData(result);
         }
@@ -90,70 +127,115 @@ const Chat = () => {
         if (node) {
             node.scrollIntoView({smooth: true})
         }
-    }, [handleSubmit])
+    }, [])
+
+    const inputRef = useRef();
+
+    const executeScroll = () => {
+        setTimeout(() => {
+            // console.log('scroll working!')
+            inputRef.current.scrollIntoView({behavior: 'smooth'})
+        }, 1000)
+    }
 
     const handleEmotion = async (e, index) => {
-        const emotion = e.target.closest('.emotion').dataset.emotion;
-        const selectedPost = data.posts[index];
-        let newLikes = selectedPost.likes;
-        let newDislikes = selectedPost.dislikes;
-        if (emotion === 'likes'){
-            // if it doesn't contain current user like...
-            if (!newLikes.includes(selectedPost.sender)){
-                newLikes = [...newLikes, selectedPost.sender]
-                newDislikes = selectedPost.dislikes.filter(dislike => dislike !== selectedPost.sender);
-            // if it does contain current user like...
-            }else {
-                newLikes = selectedPost.likes.filter(like => like !== selectedPost.sender);
-                newDislikes = [...selectedPost.dislikes]
+
+       if (user) {
+            const emotion = e.target.closest('.emotion').dataset.emotion;
+            const selectedPost = data.posts[index];
+            let likes = selectedPost.likes;
+            let dislikes = selectedPost.dislikes;
+            let opposing = false; 
+            let updatePost;
+            let create;
+
+            // Check if who clicked is not the sender of the post...
+            if (selectedPost.sender !== user.user){
+                if (emotion === 'likes'){
+                    // create new like if no prev like ...
+                    if (!likes.find(like => like.like === user.user)){
+                        likes = [...likes, {like: user.user}];
+                        // If a dislike exists remove it...
+                        if (dislikes.find(dislike => dislike.dislike === user.user)){
+                            opposing = true;
+                            dislikes = dislikes.filter(dislike => dislike.dislike !== user.user);
+                        }
+                        create = true;
+                        /**
+                         * Send a fetch request to the server (POST)
+                         * TO create a new emotion and delete opposing
+                         * if opposing is true
+                         * */ 
+                    // Remove like if a previous like exists...
+                    }else {
+                        likes = likes.filter(like => like.like !== user.user)
+                        create = false;
+                        /**
+                         * Send a request to the server (DELETE)
+                         * to delete the emotion 
+                         * */ 
+                    }
+                    
+                } else if (emotion === 'dislikes'){
+                    // new dislike created if no prev dislike exists...
+                    if (!dislikes.find(dislike => dislike.dislike === user.user)){
+                        dislikes = [...dislikes, {dislike: user.user}];
+                        // If a like exists remove...
+                        if (likes.find(like => like.like === user.user) ){
+                            opposing = true;
+                            likes = likes.filter(like => like.like !== user.user);
+                        }
+                        create = true;
+                    // Remove dislike if a prev dislike exists...
+                    }else {
+                        dislikes = dislikes.filter(dislike => dislike.dislike !== user.user)
+                        create = false;
+                    }
+                }
+                updatePost = {...selectedPost, likes, dislikes}
+                // updating the UI...
+                // Why didn't we use post.id?
+                setData(data => (
+                    {...data, posts: data.posts.map((post, i) => (
+                        index === i ? updatePost: post 
+                    ))}
+                ))
+                // Emit the updatePost index and room...
+                socket.emit('sendEmotion', {updatePost, index, room})
+                /**
+                 *  Solution 1
+                 *  send a post request to the server with the following....
+                 *  let body = {
+                 *      emotion,
+                 *      opposing,
+                 *      create,
+                 *      post_id: post.id,
+                 *      reacted_user: user.user,
+                 *  }
+                 * 
+                 * The emotion is in the emotion field, opposing whether to delete the opposing,
+                 * create whether it is to create else delete, post_id the id of the post that the emotion belongs to, 
+                 * reacted_user the user that clicked on an emotion... 
+                 * */ 
+
+                const body = {
+                    emotion, 
+                    opposing,
+                    create,
+                    post_id: selectedPost.id,
+                    reacted_user: user.user,
+                }
+               
+                await fetch(`http://localhost:8000/api/emotion`, {
+                    method: 'POST',
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify(body)
+                })
             }
-
-        } else if (emotion === 'dislikes') {
-            if (!newDislikes.includes(selectedPost.sender)) {
-                newDislikes = [ ...newDislikes, selectedPost.sender];
-                newLikes = selectedPost.likes.filter(like => like !== selectedPost.sender);
-            } else {
-                newDislikes = selectedPost.dislikes.filter(dislike => dislike !== selectedPost.sender);
-                newLikes = [...selectedPost.likes];
-            }
-        }
-        const newPost = {...selectedPost, likes: newLikes, dislikes: newDislikes};
-        
-        data.posts[index] = newPost;
-        const body = {
-            title: data.title,
-            id: data.id,
-            posts: data.posts
-        } 
-
-        const res = await fetch(`http://localhost:7000/${section}/${id}`, {
-            method: 'PUT',
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(body)
-        })
-
-        const result = await res.json();
-
-        setData(result);    
-        // console.log({newLikes});
-        // console.log({newDislikes});
-
-        /*
-            * Possible Implementation
-            *
-            * if(!user) history.push('/login');
-            * else{
-            *   update the UI
-            *   set flag to true if contradicting emotion has to be removed on the DB
-            *   send the emotion to the backend as a post
-            *   if the emotion is created it should carry along a flag that determines if...
-            *   ... the opposing emotion should be deleted
-            *   if the emotion is to be deleted the flag will not be send the emotion...
-            *   ... is simply deleted
-            *   backend return backs a success
-            * }
-
-        */ 
+            
+       } else {
+           history.push('/login')
+       }
     }
 
     const formatDate = date => {
@@ -214,15 +296,15 @@ const Chat = () => {
                                 </div>
                             ))}
                         </div>
+                        {/* when the document is done loading it should scroll into view...  */}
                         <div className='form-control' ref={document.readyState === 'complete'? viewRef: null}>
                             <form onSubmit={handleSubmit}>
-                                <input type="text" placeholder="Type your message..." value={text} onChange={(e) => setText(e.target.value)} />
-                                <Button variant="contained" type='submit' color="secondary" endIcon={<SendIcon />}>
+                                <input ref={inputRef} type="text" placeholder="Type your message..." value={text} onChange={(e) => setText(e.target.value)} required/>
+                                <Button onClick={ executeScroll } variant="contained" type='submit' color="secondary" endIcon={<SendIcon />}>
                                     Submit
                                 </Button>
                             </form>
-                        </div>
-                        
+                        </div>    
                     </div>
                 )
             }
