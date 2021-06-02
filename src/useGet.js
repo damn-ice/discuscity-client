@@ -14,7 +14,7 @@ const useGet = (url) => {
                     method: 'GET'
                 });
                 if (!req.ok){
-                    throw Error("Couldn't get resources!")
+                    throw Error("Couldn't get resources (Possibly because u are not logged in)!")
                 }
                 const res = await req.json();
                 // console.log(res)

@@ -5,6 +5,7 @@ import Topic from './Topic';
 
 
 const Topics = () => {
+    
     const { section } = useParams();
 
     const { url } = useUser();

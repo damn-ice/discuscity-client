@@ -54,33 +54,35 @@ const Chat = () => {
         return () => socket.off('receive-emotion')
     }, [socket])
 
+    // We should have use useFetch hook here? Honestly, tired of working on this component...
+    // Ans: setData is used on some other callbacks such as handleSubmit and handleEmotion...
+
     useEffect(() => {
         const abortFetch = new AbortController();
-        setTimeout(() => {
-            const getData = async () => {
-                try {
-                    const res = await fetch(`${url}/section/${section}/${id}`, {signal: abortFetch.signal})
-                    if (!res.ok){
-                        throw Error("Couldn't get resources!")
-                    }
-                    const data = await res.json();
-                    setData(data);
-                    setIsPending(false);
-                    setErr(null);
+        const getData = async () => {
+            try {
+                const res = await fetch(`${url}/section/${section}/${id}`, {signal: abortFetch.signal})
+                if (!res.ok){
+                    throw Error("Couldn't get resources!")
                 }
-                catch (err) {
-                    if (err.name === 'AbortError'){
-                        console.log('Fetch Cancelled!')
-                    }else {
-                        setIsPending(false);
-                        setData(null);
-                        setErr(err.message);
-                    }
-                    
-                }
+                const data = await res.json();
+                setData(data);
+                setIsPending(false);
+                setErr(null);
             }
-            getData();
-        }, 1000)
+            catch (err) {
+                if (err.name === 'AbortError'){
+                    console.log('Fetch Cancelled!')
+                }else {
+                    setIsPending(false);
+                    setData(null);
+                    setErr(err.message);
+                }
+                
+            }
+        }
+        getData();
+        
         return () => {
             setIsPending(true);
             setData(null);
@@ -133,8 +135,7 @@ const Chat = () => {
 
     const executeScroll = () => {
         setTimeout(() => {
-            // console.log('scroll working!')
-            inputRef.current.scrollIntoView({behavior: 'smooth'})
+            if (inputRef.current) inputRef.current.scrollIntoView({behavior: 'smooth'})
         }, 1000)
     }
 

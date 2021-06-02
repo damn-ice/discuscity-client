@@ -9,6 +9,7 @@ const Content = ({ content }) => {
     return (
         <div className={content}>
             <Switch>
+                {/* Refactor the below to be handled along with the Topic */}
                 <Route exact path='/' render={() => <h1>Welcome</h1>} />
                 <Route path='/login'>
                     <Login />

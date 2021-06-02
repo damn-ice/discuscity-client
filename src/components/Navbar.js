@@ -13,6 +13,9 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import { useUser } from '../context/UserProvider';
+
+
 
 const useStyles = makeStyles((theme) => ({
   
@@ -83,6 +86,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Navbar() {
   const classes = useStyles();
+  const { user } = useUser();
+
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
 
@@ -117,9 +122,16 @@ export default function Navbar() {
       transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       open={isMenuOpen}
       onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>Register</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Login</MenuItem>
+    >{
+      user ? <div>
+        <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+        <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+      </div>: <div>
+        <MenuItem onClick={handleMenuClose}>Register</MenuItem>
+        <MenuItem onClick={handleMenuClose}>Login</MenuItem>
+      </div>
+    }
+      
     </Menu>
   );
 
@@ -159,7 +171,7 @@ export default function Navbar() {
         >
           <AccountCircle />
         </IconButton>
-        <p>Profile</p>
+        <p>User Profile</p>
       </MenuItem>
     </Menu>
   );

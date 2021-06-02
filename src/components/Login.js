@@ -44,8 +44,8 @@ const Login = () => {
             body: JSON.stringify(data)
         })
         const res = await req.json();
-        console.log(res);
-        console.log(req);
+        // console.log(res);
+        // console.log(req);
         reset('', {
             keepValues: false,
         })
@@ -60,6 +60,8 @@ const Login = () => {
             // console.log(document.cookie)
 
             // if previous page was register... history.push(/)
+            // what if the person accessed login as first point?
+            // the above went directly to '/'...
             history.location.state? history.push('/'): history.goBack();
         }
     }
@@ -131,3 +133,4 @@ export default Login
 
 // react1: !15rfbDIIItg
 // react-moz: Reactmoz!1
+// afteriotest: After!o73s7
