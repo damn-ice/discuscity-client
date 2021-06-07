@@ -14,7 +14,7 @@ import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import { useUser } from '../context/UserProvider';
-
+import { useFilter } from '../context/FilterProvider';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -87,6 +87,8 @@ const useStyles = makeStyles((theme) => ({
 export default function Navbar() {
   const classes = useStyles();
   const { user } = useUser();
+
+  const { changeFilter } = useFilter();
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
@@ -188,6 +190,7 @@ export default function Navbar() {
               <SearchIcon />
             </div>
             <InputBase
+              onChange={(e) => changeFilter(e.target.value.toLowerCase())}
               placeholder="Search Topic ..…"
               classes={{
                 root: classes.inputRoot,

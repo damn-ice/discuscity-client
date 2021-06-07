@@ -4,6 +4,8 @@ import DashBoard from './components/DashBoard';
 import Footer from './components/Footer';
 import {BrowserRouter as Router} from 'react-router-dom';
 import UserProvider from './context/UserProvider';
+import FilterProvider from './context/FilterProvider';
+// import TopicProvider from './context/TopicProvider';
 
 
 // useeffect to get the user object...
@@ -14,12 +16,15 @@ import UserProvider from './context/UserProvider';
 // Put a TopicProvider here as well so we can enable search functionality from navbar...
 
 // We seriously need to refactor all our fetch requests... 14/5/21
+
 function App() {
   return (
     <UserProvider>
       <Router>
-        <Navbar />
-        <DashBoard />
+        <FilterProvider>
+          <Navbar />
+          <DashBoard />
+        </FilterProvider>
         <Footer />
       </Router>
     </UserProvider>

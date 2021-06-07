@@ -1,17 +1,21 @@
 import {useParams} from 'react-router-dom';
+import { useFilter } from '../context/FilterProvider';
 import { useUser } from '../context/UserProvider';
 import useFetch from '../useFetch';
 import Topic from './Topic';
 
 
 const Topics = () => {
-    
     const { section } = useParams();
 
+    const { filter } = useFilter();
     const { url } = useUser();
 
-    const { data, isPending, err } = useFetch(`${url}/section/${section}`)
+    const finalUrl = section ? `${url}/section/${section}`: `${url}/home`;
 
+    const { data, isPending, err } = useFetch(finalUrl);
+
+    const dataFilter = data && data.filter(item => item.title.toLowerCase().includes(filter));
 
     // Ensure this implementation of search only works on home and section route,...
     /** Topic Provider
@@ -60,7 +64,7 @@ const Topics = () => {
         <div>
             { err && <h1>{err}</h1>}
             { isPending && <h1>Loading...</h1>}
-            { data && <Topic topics={data} section={section}/>}
+            { data && <Topic topics={dataFilter} section={section}/>}
         </div>
     )
 }

@@ -7,7 +7,7 @@ const Topic = ({topics, section}) => {
         <div>
             { section && <TopicHeader section={section} /> }
             {topics.map(topic => (
-                <Link to={`${section}/${topic.id}`} key={topic.id} >
+                <Link to={`${section? section: topic.section}/${topic.id}`} key={topic.id} >
                     <div className='card'>
                         { topic.title }
                     </div>

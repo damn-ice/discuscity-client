@@ -8,18 +8,18 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Name from "./Name";
 import { useUser } from "../context/UserProvider";
 import io from 'socket.io-client';
+import useFetch from "../useFetch";
 
 
 const Chat = () => {
     const { url, user, cookie } = useUser();
     const { section , id } = useParams();
-    const [data, setData] = useState(null);
-    const [isPending, setIsPending] = useState(true);
-    const [err, setErr] = useState(null);
     const [text, setText] = useState('');
     const [socket, setSocket] = useState(null);
     const history = useHistory();
     const room = window.location.pathname.toLowerCase();
+
+    const { data, setData, isPending, err } = useFetch(`${url}/section/${section}/${id}`)
 
      // connect to the server socket and join room...
     useEffect(() => {
@@ -39,7 +39,7 @@ const Chat = () => {
             setData(message.msg)
         })
         return () => socket.off('receive-msg')
-    }, [socket])
+    }, [socket, setData])
 
     // socket emotion receive handler...
     useEffect(() => {
@@ -52,45 +52,8 @@ const Chat = () => {
                 ))
         })
         return () => socket.off('receive-emotion')
-    }, [socket])
-
-    // We should have use useFetch hook here? Honestly, tired of working on this component...
-    // Ans: setData is used on some other callbacks such as handleSubmit and handleEmotion...
-
-    useEffect(() => {
-        const abortFetch = new AbortController();
-        const getData = async () => {
-            try {
-                const res = await fetch(`${url}/section/${section}/${id}`, {signal: abortFetch.signal})
-                if (!res.ok){
-                    throw Error("Couldn't get resources!")
-                }
-                const data = await res.json();
-                setData(data);
-                setIsPending(false);
-                setErr(null);
-            }
-            catch (err) {
-                if (err.name === 'AbortError'){
-                    console.log('Fetch Cancelled!')
-                }else {
-                    setIsPending(false);
-                    setData(null);
-                    setErr(err.message);
-                }
-                
-            }
-        }
-        getData();
-        
-        return () => {
-            setIsPending(true);
-            setData(null);
-            setErr(null);
-            abortFetch.abort();
-        }
-    }, [url, id, section])
-
+    }, [socket, setData])
+    
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -162,19 +125,11 @@ const Chat = () => {
                             dislikes = dislikes.filter(dislike => dislike.dislike !== user.user);
                         }
                         create = true;
-                        /**
-                         * Send a fetch request to the server (POST)
-                         * TO create a new emotion and delete opposing
-                         * if opposing is true
-                         * */ 
+                  
                     // Remove like if a previous like exists...
                     }else {
                         likes = likes.filter(like => like.like !== user.user)
                         create = false;
-                        /**
-                         * Send a request to the server (DELETE)
-                         * to delete the emotion 
-                         * */ 
                     }
                     
                 } else if (emotion === 'dislikes'){
@@ -203,21 +158,6 @@ const Chat = () => {
                 ))
                 // Emit the updatePost index and room...
                 socket.emit('sendEmotion', {updatePost, index, room})
-                /**
-                 *  Solution 1
-                 *  send a post request to the server with the following....
-                 *  let body = {
-                 *      emotion,
-                 *      opposing,
-                 *      create,
-                 *      post_id: post.id,
-                 *      reacted_user: user.user,
-                 *  }
-                 * 
-                 * The emotion is in the emotion field, opposing whether to delete the opposing,
-                 * create whether it is to create else delete, post_id the id of the post that the emotion belongs to, 
-                 * reacted_user the user that clicked on an emotion... 
-                 * */ 
 
                 const body = {
                     emotion, 
@@ -316,3 +256,70 @@ const Chat = () => {
 }
 
 export default Chat
+
+
+        // LEGACY
+
+            // We should have use useFetch hook here? Honestly, tired of working on this component...
+    // Ans: setData is used on some other callbacks such as handleSubmit and handleEmotion...
+
+    // useEffect(() => {
+    //     const abortFetch = new AbortController();
+    //     const getData = async () => {
+    //         try {
+    //             const res = await fetch(`${url}/section/${section}/${id}`, {signal: abortFetch.signal})
+    //             if (!res.ok){
+    //                 throw Error("Couldn't get resources!")
+    //             }
+    //             const data = await res.json();
+    //             setData(data);
+    //             setIsPending(false);
+    //             setErr(null);
+    //         }
+    //         catch (err) {
+    //             if (err.name === 'AbortError'){
+    //                 console.log('Fetch Cancelled!')
+    //             }else {
+    //                 setIsPending(false);
+    //                 setData(null);
+    //                 setErr(err.message);
+    //             }
+                
+    //         }
+    //     }
+    //     getData();
+        
+    //     return () => {
+    //         setIsPending(true);
+    //         setData(null);
+    //         setErr(null);
+    //         abortFetch.abort();
+    //     }
+    // }, [url, id, section])
+
+
+                    /**
+                 *  Solution 1
+                 *  send a post request to the server with the following....
+                 *  let body = {
+                 *      emotion,
+                 *      opposing,
+                 *      create,
+                 *      post_id: post.id,
+                 *      reacted_user: user.user,
+                 *  }
+                 * 
+                 * The emotion is in the emotion field, opposing whether to delete the opposing,
+                 * create whether it is to create else delete, post_id the id of the post that the emotion belongs to, 
+                 * reacted_user the user that clicked on an emotion... 
+                 * */ 
+
+      /**
+                         * Send a fetch request to the server (POST)
+                         * TO create a new emotion and delete opposing
+                         * if opposing is true
+                         * */ 
+              /**
+                         * Send a request to the server (DELETE)
+                         * to delete the emotion 
+                         * */ 
