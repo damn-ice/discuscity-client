@@ -1,4 +1,4 @@
-import { useHistory, useParams } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import Badge from '@material-ui/core/Badge';
 import SendIcon from '@material-ui/icons/Send';
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
@@ -12,12 +12,13 @@ import useFetch from "../useFetch";
 
 
 const Chat = () => {
-    const { url, user, cookie } = useUser();
+    const { url, user, homeUrl, cookie } = useUser();
     const { section , id } = useParams();
     const [text, setText] = useState('');
     const [socket, setSocket] = useState(null);
     const history = useHistory();
     const room = window.location.pathname.toLowerCase();
+    
 
     const { data, setData, isPending, err } = useFetch(`${url}/section/${section}/${id}`)
 
@@ -216,7 +217,9 @@ const Chat = () => {
                                 <div className='card' key={index}>
                                     <div className='chat-flex relative'>
                                         <div className="pix">
-                                            <img src='/' alt='Pix Space'/>
+                                            <Link to='/'>
+                                                <img src={`${homeUrl}${user.pix}`} alt='Profile' width="50" height="50"/>
+                                            </Link>
                                         </div>
                                         {/* This topic-link is why this section is in the center now in left needs editting and name change... */}
                                         <div className='topic-link' >

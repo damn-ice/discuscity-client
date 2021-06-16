@@ -15,6 +15,7 @@ import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissa
 import MoreIcon from '@material-ui/icons/MoreVert';
 import { useUser } from '../context/UserProvider';
 import { useFilter } from '../context/FilterProvider';
+import { Link } from 'react-router-dom';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -88,6 +89,8 @@ export default function Navbar() {
   const classes = useStyles();
   const { user } = useUser();
 
+  console.log(user)
+
   const { changeFilter } = useFilter();
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -126,11 +129,11 @@ export default function Navbar() {
       onClose={handleMenuClose}
     >{
       user ? <div>
-        <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-        <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+        <MenuItem onClick={handleMenuClose}><Link to='/profile'>Profile</Link> </MenuItem>
+        <MenuItem onClick={handleMenuClose}><Link to='/logout'>Logout</Link></MenuItem>
       </div>: <div>
-        <MenuItem onClick={handleMenuClose}>Register</MenuItem>
-        <MenuItem onClick={handleMenuClose}>Login</MenuItem>
+        <MenuItem onClick={handleMenuClose}><Link to='/register'>Register</Link> </MenuItem>
+        <MenuItem onClick={handleMenuClose}><Link to='/login'>Login</Link></MenuItem>
       </div>
     }
       
@@ -202,12 +205,12 @@ export default function Navbar() {
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             <IconButton aria-label="show likes" color="inherit">
-              <Badge badgeContent={4} color="secondary">
+              <Badge badgeContent={user && user.totalLikes.length} color="secondary">
                 <InsertEmoticonIcon />
               </Badge>
             </IconButton>
             <IconButton aria-label="show dislikes" color="inherit">
-              <Badge badgeContent={17} color="secondary">
+              <Badge badgeContent={user && user.totalDislikes.length} color="secondary">
                 <SentimentVeryDissatisfiedIcon />
               </Badge>
             </IconButton>

@@ -8,6 +8,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+a {
+  text-decoration: none;
+  color: #332F2E;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
@@ -93,9 +98,18 @@ small {
   width: 80%;
   height: 30px;
 }
+
 .pix {
   margin-right: 10px;
-} 
+  width: 60px;
+  height: 60px;
+  /* max-width: 20px;
+  max-height: 20px; */
+  border-radius: 50%;
+  /* overflow: hidden; */
+  /* background-color: white; */
+  border: solid 2px black;
+}
 
 .topic-link {
   word-wrap: break-word;

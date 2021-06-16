@@ -17,6 +17,8 @@ const Topics = () => {
 
     const dataFilter = data && data.filter(item => item.title.toLowerCase().includes(filter));
 
+    // We need to paginate this dataFilter... 
+
     // Ensure this implementation of search only works on home and section route,...
     /** Topic Provider
      * const [ topics, setTopics] = useState(null);
