@@ -1,3 +1,8 @@
+* {
+  scrollbar-width: 10px;
+  scrollbar-color: red black;
+}
+
 body {
   background-color: #4D4D4D;
   margin: 0;

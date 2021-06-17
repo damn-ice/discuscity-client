@@ -38,16 +38,13 @@ const useStyles = makeStyles(theme => ({
             background: 'black',
             borderRadius: '10px'
         },
-        // '&::-webkit-scrollbar-track':{
-        //     boxShadow: 'inset 0 0 5px grey',
-        //     borderRadius: '10px'
-
-        // },
         '&::-webkit-scrollbar-thumb':{
             background: 'red',
             width: '5px',
             borderRadius: '10px',
         },
+        scrollbarWidth: 'thin',
+        scrollbarColor: 'blue orange',
         alignItems: 'center',
         zIndex: 100,
         boxShadow: '0 3px 10px rgba(0, 0, 0, 0.2)',

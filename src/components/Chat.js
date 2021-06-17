@@ -115,7 +115,7 @@ const Chat = () => {
             let create;
 
             // Check if who clicked is not the sender of the post...
-            if (selectedPost.sender !== user.user){
+            if (selectedPost.sender.username !== user.user){
                 if (emotion === 'likes'){
                     // create new like if no prev like ...
                     if (!likes.find(like => like.like === user.user)){
@@ -218,13 +218,14 @@ const Chat = () => {
                                     <div className='chat-flex relative'>
                                         <div className="pix">
                                             <Link to='/'>
-                                                <img src={`${homeUrl}${user.pix}`} alt='Profile' width="50" height="50"/>
+                                            {/* This null should be replaced with sender.pix */}
+                                                <img src={`${homeUrl}${post.sender.person.pix}`} alt='Profile' width="50" height="50"/>
                                             </Link>
                                         </div>
                                         {/* This topic-link is why this section is in the center now in left needs editting and name change... */}
                                         <div className='topic-link' >
                                             {/* <span style={ {color: color[randomGen(color)], fontWeight: 'bold'}} onLoad={console.log(initialRender)} >{post.sender}</span> --  */}
-                                            <Name sender={post.sender} />
+                                            <Name sender={post.sender.username} />
                                              <small>{formatDate(post.date)}</small>
                                             <p>{post.message}</p>
                                             <div className="emotions">

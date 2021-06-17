@@ -39,13 +39,12 @@ const Register = () => {
     // if logged in go back...
     user && history.goBack();
 
-    const onSubmit = async (data, e) => {
-        
-    const req = await fetch(`${url}/register`, {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(data)
-        })
+    const onSubmit = async (data, e) => {  
+        const req = await fetch(`${url}/register`, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(data)
+            })
         const res = await req.json();
         reset('', {
             keepValues: false,
@@ -66,7 +65,7 @@ const Register = () => {
         <div className='card form'>
             <span className='center'><h3>Registration Form</h3></span>
             {err && <p className='center red'>{err}</p>}
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
                 <FormGroup>
                     <FormControl>
                         <InputLabel  classes={{focused: classes.authForm}} htmlFor="input-with-icon-adornment">Username</InputLabel>

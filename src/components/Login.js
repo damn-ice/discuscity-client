@@ -70,7 +70,7 @@ const Login = () => {
             <span className='center'><h3>Login Form</h3></span>
             <p className="center">{history.location.state}</p>
             {err && <p className='center red'>{err}</p>}
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
                 <FormGroup>
                     <FormControl>
                         <InputLabel  classes={{focused: classes.authForm}} htmlFor="input-with-icon-adornment">Username</InputLabel>

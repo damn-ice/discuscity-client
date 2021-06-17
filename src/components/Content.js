@@ -1,5 +1,6 @@
 import { Route, Switch} from 'react-router-dom';
 import Chat from './Chat';
+import Create from './Create';
 import Login from './Login';
 import Register from './Register';
 import Topics from './Topics';
@@ -13,6 +14,9 @@ const Content = ({ content }) => {
                 {/* <Route exact path='/' render={() => <h1>Welcome</h1>} /> */}
                 <Route path='/login'>
                     <Login />
+                </Route>
+                <Route path='/create'>
+                    <Create />
                 </Route>
                 <Route path='/register'>
                     <Register/>
