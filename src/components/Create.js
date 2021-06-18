@@ -29,8 +29,6 @@ const Create = () => {
 
     !section && history.push('/')
 
-    const [ err, setErr] = useState(null);
-
     const {register, handleSubmit, formState: { errors }, reset} = useForm();
 
     const onSubmit = async (data, e) => {
@@ -45,7 +43,7 @@ const Create = () => {
             reset('', {
                 keepValues: false,
             })
-            const req = await fetch(`${url}/create`, {
+            await fetch(`${url}/create`, {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json",
@@ -64,7 +62,6 @@ const Create = () => {
     return (
         <div className='card form'>
             <span className='center'><h3>Create Topic Form</h3></span>
-            {err && <p className='center red'>{err}</p>}
             <form autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
                 <FormGroup>
                     <FormControl>

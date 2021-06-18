@@ -216,10 +216,10 @@ const Chat = () => {
                             {data.posts.map( (post, index) => (
                                 <div className='card' key={index}>
                                     <div className='chat-flex relative'>
-                                        <div className="pix">
+                                        <div>
                                             <Link to='/'>
                                             {/* This null should be replaced with sender.pix */}
-                                                <img src={`${homeUrl}${post.sender.person.pix}`} alt='Profile' width="50" height="50"/>
+                                                <img className='pix' src={`${homeUrl}${post.sender.person.pix}`} alt='Profile' width="50" height="50"/>
                                             </Link>
                                         </div>
                                         {/* This topic-link is why this section is in the center now in left needs editting and name change... */}
