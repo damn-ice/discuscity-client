@@ -36,6 +36,7 @@ const Login = () => {
         setVisible(!visible)
     }
 
+    console.log(cookie);
     cookie && (section ? history.push(section.from): history.push('/'));
 
     const onSubmit = async (data, e) => {

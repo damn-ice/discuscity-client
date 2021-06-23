@@ -16,11 +16,11 @@ const Logout = () => {
 
     const confirmLogout = async (e, val) => {
         if (val) {
+            setUser(null)
             await fetch(`${url}/logout`, {
                 credentials: 'include',
                 method: 'GET'
             })
-            setUser( null)
             document.cookie = 'csrftoken=';
             history.push('/')
         } else {
