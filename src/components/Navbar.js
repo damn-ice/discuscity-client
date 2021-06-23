@@ -90,7 +90,6 @@ export default function Navbar() {
   const classes = useStyles();
   const { homeUrl, user } = useUser();
 
-  console.log(user)
   const { changeFilter } = useFilter();
 
   const [anchorEl, setAnchorEl] = useState(null);
