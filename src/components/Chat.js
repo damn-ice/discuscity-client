@@ -1,4 +1,4 @@
-import { Link, useHistory, useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import Badge from '@material-ui/core/Badge';
 import SendIcon from '@material-ui/icons/Send';
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
@@ -11,13 +11,14 @@ import io from 'socket.io-client';
 import useFetch from "../useFetch";
 
 
-const Chat = () => {
-    const { url, user, homeUrl, cookie } = useUser();
+const Chat = ({ changeProfile }) => {
+    const { url, user, homeUrl, formatDate } = useUser();
     const { section , id } = useParams();
     const [text, setText] = useState('');
     const [socket, setSocket] = useState(null);
     const history = useHistory();
     const room = window.location.pathname.toLowerCase();
+    const cookie = document.cookie.split('=')[1]
     
 
     const { data, setData, isPending, err } = useFetch(`${url}/section/${section}/${id}`)
@@ -59,7 +60,12 @@ const Chat = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!user) {
-            history.push('/login')
+            history.push({
+                pathname: '/login',
+                state: {
+                    from: `${section}/${id}`,
+                }
+            })
         } else {
             const post = {           
                 message: text,
@@ -176,36 +182,20 @@ const Chat = () => {
             }
             
        } else {
-           history.push('/login')
+            history.push({
+                pathname: '/login',
+                state: {
+                    from: `${section}/${id}`,
+                }
+            })
        }
     }
-
-    const formatDate = date => {
-        const dateObj = new Date(date);
-        const currentTime = new Date();
-
-        if (dateObj.getFullYear() === currentTime.getFullYear()
-            && dateObj.getMonth() === currentTime.getMonth()
-            && dateObj.getDate() === currentTime.getDate()
-            && dateObj.getHours() === currentTime.getHours()
-            && dateObj.getMinutes() === currentTime.getMinutes()
-        ){
-            return 'Now!'
-        }else if (dateObj.getFullYear() === currentTime.getFullYear()
-            && dateObj.getMonth() === currentTime.getMonth()
-            && dateObj.getDate() === currentTime.getDate()
-        ){
-            return `Today @ ${dateObj.getHours()}:${dateObj.getMinutes() < 10 ? `0${dateObj.getMinutes()}`:`${dateObj.getMinutes()}`}`
-        }else if (dateObj.getFullYear() === currentTime.getFullYear()
-            && dateObj.getMonth() === currentTime.getMonth()
-            && dateObj.getDate() === currentTime.getDate() - 1
-        ){
-            return `Yesterday @ ${dateObj.getHours()}:${dateObj.getMinutes() < 10 ? `0${dateObj.getMinutes()}`:`${dateObj.getMinutes()}`}`
-        }else {
-            return `${dateObj.getDate()}/${dateObj.getMonth()+1}/${dateObj.getFullYear()}`
-        }        
-    }
    
+    const viewUser = (e, index) => {
+        let selectedUser = data.posts[index].sender
+        changeProfile(selectedUser)
+        history.push('/user')
+    }
     return (
         <>
             {
@@ -217,10 +207,7 @@ const Chat = () => {
                                 <div className='card' key={index}>
                                     <div className='chat-flex relative'>
                                         <div>
-                                            <Link to='/'>
-                                            {/* This null should be replaced with sender.pix */}
-                                                <img className='pix' src={`${homeUrl}${post.sender.person.pix}`} alt='Profile' width="50" height="50"/>
-                                            </Link>
+                                            <img onClick={(e) => viewUser(e, index)} className='pix' src={`${homeUrl}${post.sender.person.pix}`} alt='Profile' width="50" height="50"/>
                                         </div>
                                         {/* This topic-link is why this section is in the center now in left needs editting and name change... */}
                                         <div className='topic-link' >

@@ -22,13 +22,15 @@ const useStyles = makeStyles(theme => ({
 const Register = () => {
     const classes = useStyles();
 
-    const { url, user } = useUser();
+    const { url } = useUser();
 
     const [ err, setErr] = useState(null);
 
     const {register, watch, handleSubmit, formState: { errors }, reset} = useForm();
 
-    const history = useHistory()
+    const history = useHistory();
+    const section = history.location.state;
+    const cookie = document.cookie.split('=')[1]
 
     const password = watch('password')
 
@@ -37,7 +39,7 @@ const Register = () => {
         setVisible(!visible)
     }
     // if logged in go back...
-    user && history.goBack();
+    cookie && (section ? history.push(section.from): history.push('/'));
 
     const onSubmit = async (data, e) => {  
         const req = await fetch(`${url}/register`, {
@@ -53,7 +55,10 @@ const Register = () => {
         if (res === 'success'){
             history.push({
                 pathname: '/login',
-                state: 'User Created!'
+                state: {
+                    from: '/register',
+                    value: 'User Created!'
+                }
             })
         }else if(res.username){
             setErr(res.username[0]);
@@ -207,3 +212,4 @@ const Register = () => {
 export default Register
 
 // react1: !15rfbDIIItg
+// task manager chrome ... Shift +Esc

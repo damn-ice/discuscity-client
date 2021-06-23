@@ -14,6 +14,7 @@ const useGet = (url) => {
                     method: 'GET'
                 });
                 if (!req.ok){
+                    document.cookie = 'csrftoken=';
                     throw Error("Couldn't get resources (Possibly because u are not logged in)!")
                 }
                 const res = await req.json();

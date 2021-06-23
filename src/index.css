@@ -32,7 +32,9 @@ small {
   width: 100%;
   height: 40px
 } */
-
+.m-20 {
+  margin: 20px;
+}
 .red {
   color: red;
 }
@@ -80,6 +82,19 @@ small {
   padding-top: 60px;
 }
 
+.confirm-logout{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+  padding: 5px;
+  width: 40%;
+}
+
+.confirm-logout > a {
+  margin: 10px;
+}
+
 .emotions {
   position: absolute;
   display: flex;
@@ -106,8 +121,6 @@ small {
 
 .pix {
   margin-right: 10px;
-  width: 60px;
-  height: 60px;
   /* max-width: 20px;
   max-height: 20px; */
   border-radius: 50%;
@@ -116,14 +129,42 @@ small {
   border: solid 2px black;
 }
 
+.pix.profile{
+  margin-right: initial;
+  width: 120px;
+  height: 120px;
+}
+.profile-details {
+  font-size: 20px;
+  margin: 18px auto;
+  
+}
+.name {
+  font-weight: bolder;
+  font-style: italic;
+  margin-top: 0px;
+  transform: scale(1.2, 1.2);
+}
+
 .topic-link {
   word-wrap: break-word;
   width: 80%;
   text-align: left;
 }
 
+label > img:hover {
+  border: solid 2px white;
+  transform: scale(1.05);
+}
+
 .center {
   text-align: center;
+}
+
+.center.flex{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .pointer {

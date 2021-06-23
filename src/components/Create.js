@@ -1,6 +1,5 @@
 import { Button, FormControl, FormGroup, Input, InputLabel, InputAdornment } from "@material-ui/core"
 import { useHistory } from "react-router-dom"
-import { useState } from 'react';
 import { useForm } from "react-hook-form";
 import { makeStyles } from '@material-ui/core/styles';
 import EmailIcon from '@material-ui/icons/Email';
@@ -20,7 +19,9 @@ const useStyles = makeStyles(theme => ({
 
 const Create = () => {
 
-    const { cookie, url, user } = useUser();
+    const { url, user } = useUser();
+
+    const cookie = document.cookie.split('=')[1]
 
     const classes = useStyles();
     const history = useHistory();
@@ -28,6 +29,12 @@ const Create = () => {
     const section = history.location.state
 
     !section && history.push('/')
+    !user && history.push({
+        pathname: '/login',
+        state: {
+            from: '/create',
+        }
+    })
 
     const {register, handleSubmit, formState: { errors }, reset} = useForm();
 
@@ -69,7 +76,7 @@ const Create = () => {
                             classes={{disabled: classes.authForm}}
                             disabled
                             label="Section"
-                            defaultValue={section && section.toUpperCase()}
+                            defaultValue={section && section}
                             variant="filled"
                         />
                     </FormControl>

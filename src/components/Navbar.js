@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
+import Avatar from '@material-ui/core/Avatar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
@@ -87,7 +88,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Navbar() {
   const classes = useStyles();
-  const { user } = useUser();
+  const { homeUrl, user } = useUser();
 
   const { changeFilter } = useFilter();
 
@@ -172,7 +173,10 @@ export default function Navbar() {
           aria-haspopup="true"
           color="inherit"
         >
-          <AccountCircle />
+          {
+            user ? <Avatar alt={`${user.first_name}`} src={`${homeUrl}${user.pix}`} />:
+            <AccountCircle />
+          }
         </IconButton>
         <p>User Profile</p>
       </MenuItem>
@@ -220,7 +224,10 @@ export default function Navbar() {
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
+              {
+                user ? <Avatar alt={`${user.first_name}`} src={`${homeUrl}${user.pix}`} />:
               <AccountCircle />
+              }
             </IconButton>
           </div>
           <div className={classes.sectionMobile}>

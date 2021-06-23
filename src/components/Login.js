@@ -22,19 +22,21 @@ const useStyles = makeStyles(theme => ({
 const Login = () => {
     const classes = useStyles();
 
-    const {url, setUser, setCookie, user } = useUser();
+    const { url, setUser } = useUser();
 
     const [ err, setErr] = useState(null);
 
     const {register, handleSubmit, formState: { errors }, reset} = useForm();
 
-    const history = useHistory()
+    const history = useHistory();
+    const section = history.location.state;
+    const cookie = document.cookie.split('=')[1]
     const [visible, setVisible] = useState(false);
     const handleVisibility = e => {
         setVisible(!visible)
     }
 
-    user && history.goBack();
+    cookie && (section ? history.push(section.from): history.push('/'));
 
     const onSubmit = async (data, e) => {
         const req = await fetch(`${url}/login`, {
@@ -56,19 +58,18 @@ const Login = () => {
             // useUser context function to set user on app...
             setErr(null);
             setUser(res);
-            setCookie(document.cookie.split('=')[1])
             // console.log(document.cookie)
 
             // if previous page was register... history.push(/)
             // what if the person accessed login as first point?
             // the above went directly to '/'...
-            history.location.state? history.push('/'): history.goBack();
+            section? (section.from !== '/register' && history.push(section.from) ): history.push('/');
         }
     }
     return (
         <div className='card form'>
             <span className='center'><h3>Login Form</h3></span>
-            <p className="center">{history.location.state}</p>
+            <p className="center">{section && section.from === '/register' && section.value }</p>
             {err && <p className='center red'>{err}</p>}
             <form autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
                 <FormGroup>
