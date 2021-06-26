@@ -174,7 +174,7 @@ const Chat = ({ changeProfile }) => {
                     reacted_user: user.user,
                 }
                
-                await fetch(`http://localhost:8000/api/emotion`, {
+                await fetch(`${url}/emotion`, {
                     method: 'POST',
                     headers: {"Content-Type": "application/json"},
                     body: JSON.stringify(body)

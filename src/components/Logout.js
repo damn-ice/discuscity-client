@@ -34,7 +34,6 @@ const Logout = () => {
                 <Button variant="contained" onClick={(e) => confirmLogout(e, true)} color="primary" endIcon={<SentimentVeryDissatisfiedIcon />}>
                         YES
                 </Button> 
-
                 <Button variant="contained" onClick={(e) => confirmLogout(e, false)} color="secondary" endIcon={<InsertEmoticonIcon />}>
                         NO
                 </Button> 

@@ -152,7 +152,7 @@ small {
   text-align: left;
 }
 
-label > img:hover {
+label > img:hover, .chat-flex img:hover {
   border: solid 2px white;
   transform: scale(1.05);
 }

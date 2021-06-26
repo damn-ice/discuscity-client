@@ -2,11 +2,10 @@ import { Button, FormControl, FormGroup, Input, InputAdornment, InputLabel } fro
 import {  Face} from "@material-ui/icons";
 import SendIcon from '@material-ui/icons/Send';
 import EmailIcon from '@material-ui/icons/Email';
-import { Link, useHistory } from "react-router-dom";
-import { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useForm } from "react-hook-form";
 import { useUser } from "../context/UserProvider";
+import { useHistory } from "react-router-dom";
 
 
 const useStyles = makeStyles(theme => ({
@@ -22,31 +21,39 @@ const useStyles = makeStyles(theme => ({
 const EditProfile = ({ edit }) => {
     const classes = useStyles();
 
-    const { url, user } = useUser();
-
-    const [ err, setErr] = useState(null);
-
-    const {register, handleSubmit, formState: { errors }, reset} = useForm();
+    const { url, setUser } = useUser();
 
     const history = useHistory()
 
+    const cookie = document.cookie.split('=')[1]
+
+    const {register, handleSubmit, formState: { errors }, reset} = useForm();
+
 
     const onSubmit = async (data, e) => {  
-        const req = await fetch(`${url}/register`, {
+        const req = await fetch(`${url}/update`, {
             method: "POST",
-            headers: {"Content-Type": "application/json"},
+            headers: {
+                "X-CSRFToken": cookie,
+                "Content-Type": "application/json"
+            },
+            credentials: 'include',
             body: JSON.stringify(data)
             })
-        await req.json();
-        reset('', {
-            keepValues: false,
-        })
-        
+        if (!req.ok) {
+            console.log('Something is wrong!')
+        }else {
+            const res = await req.json()
+            setUser(res)
+            reset('', {
+                keepValues: false,
+            })
+            history.push('/')
+        }        
     }
     return (
         <div className='card form'>
             <span className='center'><h3>Edit Profile</h3></span>
-            {err && <p className='center red'>{err}</p>}
             <form autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
                 <FormGroup>
                     <FormControl>
@@ -109,7 +116,7 @@ const EditProfile = ({ edit }) => {
                     </Button>
                     <span className='center'>
                         <p>Are you sure about this? 
-                        <Link style={{textDecoration: 'underline', fontWeight: 'bold'}} onClick={(e) => edit(e, true)}> Back to Profile.</Link>
+                        <span style={{textDecoration: 'underline', fontWeight: 'bold', cursor: 'pointer'}} onClick={(e) => edit(e, true)}> Back to Profile.</span>
                         </p>
                     </span>
                 </FormGroup>

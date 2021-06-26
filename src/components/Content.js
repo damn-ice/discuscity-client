@@ -21,7 +21,6 @@ const Content = ({ content }) => {
                     <Login />
                 </Route>
                 <Route path='/create'>
-                    {/* seems this check need to be handled within the component... */}
                     <Create />
                 </Route>
                 <Route path='/register'>
