@@ -152,7 +152,7 @@ export default function Navbar() {
     >
       <MenuItem>
         <IconButton aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="secondary">
+          <Badge badgeContent={user && user.totalLikes.length} color="secondary">
             <InsertEmoticonIcon />
           </Badge>
         </IconButton>
@@ -160,7 +160,7 @@ export default function Navbar() {
       </MenuItem>
       <MenuItem>
         <IconButton aria-label="show 11 new notifications" color="inherit">
-          <Badge badgeContent={11} color="secondary">
+          <Badge badgeContent={user && user.totalDislikes.length} color="secondary">
             <SentimentVeryDissatisfiedIcon />
           </Badge>
         </IconButton>

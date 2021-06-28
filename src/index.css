@@ -44,7 +44,7 @@ small {
 }
 .card {
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-  padding: 12px 16px;
+  padding: 12px 36px;
   margin: 8px;
   background-color: #707070;
   border-radius: 20px;
@@ -172,6 +172,9 @@ label > img:hover, .chat-flex img:hover {
 }
 
 @media (max-width: 768px){
+  small {
+    display: block;
+  }
   .form-control input{
     width: 60%;
     height: 25px;

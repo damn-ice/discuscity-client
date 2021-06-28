@@ -5,8 +5,11 @@ import Footer from './components/Footer';
 import {BrowserRouter as Router} from 'react-router-dom';
 import UserProvider from './context/UserProvider';
 import FilterProvider from './context/FilterProvider';
-// import TopicProvider from './context/TopicProvider';
 
+
+/**
+ * COMPLETED => 27th June, 2021...
+ * */ 
 
 // useeffect to get the user object...
 // put it inside the user provider
