@@ -58,12 +58,12 @@ const Login = () => {
             // useUser context function to set user on app...
             setErr(null);
             setUser(res);
-            // console.log(document.cookie)
+            console.log(document.cookie)
 
             // if previous page was register... history.push(/)
             // what if the person accessed login as first point?
             // the above went directly to '/'...
-            section? (section.from !== '/register' && history.push(section.from) ): history.push('/');
+            // section? (section.from !== '/register' && history.push(section.from) ): history.push('/');
         }
     }
     return (

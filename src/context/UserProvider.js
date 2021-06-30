@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import useGet from '../useGet';
 
-const url = 'http://localhost:8000/api'
+const url = 'https://discuscity-joel.herokuapp.com/api'
 
 const homeUrl = url.split('/api')[0];
 
