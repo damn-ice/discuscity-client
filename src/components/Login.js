@@ -45,6 +45,7 @@ const Login = () => {
             credentials: 'include',
             body: JSON.stringify(data)
         })
+        console.log(req)
         const res = await req.json();
         // console.log(res);
         // console.log(req);
