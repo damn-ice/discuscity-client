@@ -97,7 +97,7 @@ export default function Navbar() {
 
   useEffect(() => {
     const PostTest = async () => {
-      const req = await fetch(`${homeUrl}/api/test/`, {
+      const req = await fetch(`${homeUrl}/api/test`, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json",
