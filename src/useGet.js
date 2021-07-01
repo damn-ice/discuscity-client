@@ -13,6 +13,7 @@ const useGet = (url) => {
                     credentials: 'include',
                     method: 'GET'
                 });
+                console.log(document.cookie)
                 if (!req.ok){
                     document.cookie = 'csrftoken=';
                     throw Error("Couldn't get resources (Possibly because u are not logged in)!")
