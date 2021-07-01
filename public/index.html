@@ -42,8 +42,7 @@
     {% csrf_token %}
     <script>
       const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-      console.log({csrftoken})
-      alert('HI doc')
+      console.log(csrftoken)
     </script>
   </body>
 </html>
