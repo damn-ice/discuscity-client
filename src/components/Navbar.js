@@ -103,7 +103,6 @@ export default function Navbar() {
             "Content-Type": "application/json",
         },
         credentials: 'include',
-        body: JSON.stringify('it works')
       })
       const res = await req.json()
       console.log(res)
