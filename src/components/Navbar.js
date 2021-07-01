@@ -108,6 +108,7 @@ export default function Navbar() {
       const res = await req.json()
       console.log(res)
     } 
+    PostTest();
   })
 
   const isMenuOpen = Boolean(anchorEl);
