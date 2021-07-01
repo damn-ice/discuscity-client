@@ -109,6 +109,7 @@ export default function Navbar() {
       console.log(res)
     } 
     PostTest();
+    console.log('Post was ran!')
   })
 
   const isMenuOpen = Boolean(anchorEl);
