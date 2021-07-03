@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 const useGet = (url) => {
     const [data, setData] = useState(null);
     const [status, setStatus] = useState(null);
+    const csrfUrl = 'https://affectionate-saha-343dae.netlify.app/api/get_csrf'
 
     useEffect(() => {
         const abortFetch = new AbortController();
@@ -13,13 +14,19 @@ const useGet = (url) => {
                     credentials: 'include',
                     method: 'GET'
                 });
-                console.log(document.cookie)
                 if (!req.ok){
-                    document.cookie = 'csrftoken=';
+                    localStorage.removeItem('discuscity-token')
                     throw Error("Couldn't get resources (Possibly because u are not logged in)!")
                 }
                 const res = await req.json();
-                console.log(res)
+                if (res && !localStorage.getItem('discuscity-token')){
+                    const req = await fetch(csrfUrl, {
+                        credentials: 'include',
+                        method: 'GET',
+                    })
+                    const res = await req.json()
+                    localStorage.setItem('discuscity-token', res.csrfToken)
+                }
                 setData(res);
                 setStatus(req.status);
             } catch (err) {

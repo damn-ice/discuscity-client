@@ -21,7 +21,7 @@ const Create = () => {
 
     const { url, user } = useUser();
 
-    const cookie = document.cookie.split('=')[1]
+    const cookie = localStorage.getItem('discuscity-backend')
 
     const classes = useStyles();
     const history = useHistory();

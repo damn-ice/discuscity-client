@@ -95,21 +95,6 @@ export default function Navbar() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
 
-  useEffect(() => {
-    const PostTest = async () => {
-      const req = await fetch(`${homeUrl}/api/test`, {
-        method: 'GET',
-        headers: {
-            "Content-Type": "application/json",
-        },
-        credentials: 'include',
-      })
-      const res = await req.json()
-      console.log(res)
-    } 
-    PostTest();
-    console.log('Post was ran!')
-  })
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
