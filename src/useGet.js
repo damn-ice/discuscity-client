@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 const useGet = (url) => {
     const [data, setData] = useState(null);
     const [status, setStatus] = useState(null);
-    const csrfUrl = 'https://affectionate-saha-343dae.netlify.app/api/get_csrf'
+    const csrfUrl = 'https://discuscity-joel.herokuapp.com/api/get_csrf'
 
     useEffect(() => {
         const abortFetch = new AbortController();
