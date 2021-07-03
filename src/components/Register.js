@@ -30,7 +30,7 @@ const Register = () => {
 
     const history = useHistory();
     const section = history.location.state;
-    const cookie = document.cookie.split('=')[1]
+    const cookie = localStorage.getItem('discuscity-token')
 
     const password = watch('password')
 

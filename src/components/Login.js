@@ -30,7 +30,7 @@ const Login = () => {
 
     const history = useHistory();
     const section = history.location.state;
-    const cookie = document.cookie.split('=')[1]
+    const cookie = localStorage.getItem('discuscity-backend');
     const [visible, setVisible] = useState(false);
     const handleVisibility = e => {
         setVisible(!visible)
@@ -47,8 +47,6 @@ const Login = () => {
         })
         console.log(req)
         const res = await req.json();
-        // console.log(res);
-        // console.log(req);
         reset('', {
             keepValues: false,
         })
@@ -57,9 +55,9 @@ const Login = () => {
             setErr(res)
         }else {
             // useUser context function to set user on app...
+            localStorage.setItem('discuscity-token', res.csrfToken)
             setErr(null);
             setUser(res);
-            console.log(document.cookie)
 
             // if previous page was register... history.push(/)
             // what if the person accessed login as first point?

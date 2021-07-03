@@ -6,7 +6,7 @@ import { useUser } from '../context/UserProvider';
 
 const Logout = () => {
 
-    const cookie = document.cookie.split('=')[1];
+    const cookie = localStorage.getItem('discuscity-token');
 
     const history = useHistory();
 
@@ -21,7 +21,7 @@ const Logout = () => {
                 credentials: 'include',
                 method: 'GET'
             })
-            document.cookie = 'csrftoken=';
+            localStorage.removeItem('discuscity-token');
             history.push('/')
         } else {
             history.goBack()

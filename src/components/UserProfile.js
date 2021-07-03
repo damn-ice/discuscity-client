@@ -18,7 +18,7 @@ const UserProfile = () => {
     const editProfile = (e, value) => {
         setViewProfile(value);
     }
-    const cookie = document.cookie.split('=')[1]
+    const cookie = localStorage.getItem('discuscity-token')
     const history = useHistory();
     !cookie && history.push({
         pathname: '/login',
@@ -55,6 +55,7 @@ const UserProfile = () => {
                 console.log('Invalid Image Format!')
             }else {
                 const res = await req.json()
+                localStorage.setItem('discuscity-token', res.csrfToken)
                 setUser(res)
             }
         }else {

@@ -8,7 +8,7 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 const UserDetails = ({ profile }) => {
 
     const { homeUrl, formatDate } = useUser();
-    const cookie = document.cookie.split('=')[1]
+    const cookie = localStorage.getItem('discuscity-token')
     const history = useHistory();
     !cookie && history.push({
         pathname: '/login',

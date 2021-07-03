@@ -25,7 +25,7 @@ const EditProfile = ({ edit }) => {
 
     const history = useHistory()
 
-    const cookie = document.cookie.split('=')[1]
+    const cookie = localStorage.getItem('discuscity-token')
 
     const {register, handleSubmit, formState: { errors }, reset} = useForm();
 
@@ -44,6 +44,7 @@ const EditProfile = ({ edit }) => {
             console.log('Something is wrong!')
         }else {
             const res = await req.json()
+            localStorage.setItem('discuscity-token', res.csrfToken)
             setUser(res)
             reset('', {
                 keepValues: false,
