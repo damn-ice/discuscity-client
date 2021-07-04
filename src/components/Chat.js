@@ -32,7 +32,7 @@ const Chat = ({ changeProfile }) => {
         setSocket(newSocket)
         // close connection if unmounted...
         return () => newSocket.close()
-    }, [room])
+    }, [url, room])
 
     // socket receive message handler...
     useEffect(() => {
