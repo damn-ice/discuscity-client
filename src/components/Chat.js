@@ -27,7 +27,7 @@ const Chat = ({ changeProfile }) => {
     useEffect(() => {
         // anyone who joins the chat will also get message irrespective of if logged in...
         // if (!user) return;
-        const newSocket = io('https://discuscity-joel.herokuapp.com/api')
+        const newSocket = io(`${url}/sio`)
         newSocket.emit('join', room)
         setSocket(newSocket)
         // close connection if unmounted...
