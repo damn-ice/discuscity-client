@@ -29,6 +29,7 @@ const Chat = ({ changeProfile }) => {
         // if (!user) return;
         const newSocket = io(`${url}/sio`)
         newSocket.emit('join', room)
+        console.log(newSocket);
         setSocket(newSocket)
         // close connection if unmounted...
         return () => newSocket.close()
