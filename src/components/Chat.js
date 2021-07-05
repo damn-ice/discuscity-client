@@ -106,6 +106,7 @@ const Chat = ({ changeProfile }) => {
 
     const executeScroll = () => {
         setTimeout(() => {
+            console.log(inputRef)
             if (inputRef.current) inputRef.current.scrollIntoView({behavior: 'smooth'})
         }, 1000)
     }
