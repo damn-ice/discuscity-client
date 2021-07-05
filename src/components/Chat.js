@@ -27,13 +27,13 @@ const Chat = ({ changeProfile }) => {
     useEffect(() => {
         // anyone who joins the chat will also get message irrespective of if logged in...
         // if (!user) return;
-        const newSocket = io(`${url}/sio`)
+        const newSocket = io(homeUrl)
         newSocket.emit('join', room)
         console.log(newSocket);
         setSocket(newSocket)
         // close connection if unmounted...
         return () => newSocket.close()
-    }, [url, room])
+    }, [homeUrl, room])
 
     // socket receive message handler...
     useEffect(() => {
