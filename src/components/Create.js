@@ -32,7 +32,7 @@ const Create = () => {
     !user && history.push({
         pathname: '/login',
         state: {
-            from: '/create',
+            from: `/${section}`,
         }
     })
 
