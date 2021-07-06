@@ -66,7 +66,8 @@ const Login = () => {
             // if previous page was register... history.push(/)
             // what if the person accessed login as first point?
             // the above went directly to '/'...
-            section? (section.from !== '/register' && history.push(section.from) ): history.push('/');
+            // section? (section.from !== '/register' && history.push(section.from) ): history.push('/');
+            history.push('/politics/3')
             console.log(section.from)
         }
     }
