@@ -71,6 +71,7 @@ const Chat = ({ changeProfile }) => {
                 message: text,
                 date: new Date(),
             }
+            setText('');
             const req = await fetch(`${url}/section/${section}/${id}/`, {
                 method: 'POST',
                 headers: {
@@ -83,7 +84,6 @@ const Chat = ({ changeProfile }) => {
             const result = await req.json();
             // emit message to everyone currently in the room...
             socket.emit('sendMsg', {result, room})
-            setText('');
             setData(result);
         }
     }
@@ -106,7 +106,7 @@ const Chat = ({ changeProfile }) => {
     const executeScroll = () => {
         setTimeout(() => {
             if (inputRef.current) inputRef.current.scrollIntoView({behavior: 'smooth'})
-        }, 1000)
+        }, 1500)
     }
 
     const handleEmotion = async (e, index) => {
