@@ -37,10 +37,10 @@ const Login = () => {
     }
 
     cookie && (section ? history.push(section.from): history.push('/'));
-    // console.log({cookie})
-    // console.log({section})
-    // console.log({from: section?.from})
-    // console.log('section ? history.push(section.from): history.push(/)')
+    console.log({cookie})
+    console.log({section})
+    console.log({from: section?.from})
+    console.log('section ? history.push(section.from): history.push(/)')
 
     const onSubmit = async (data, e) => {
         const req = await fetch(`${url}/login`, {
@@ -67,6 +67,7 @@ const Login = () => {
             // what if the person accessed login as first point?
             // the above went directly to '/'...
             section? (section.from !== '/register' && history.push(section.from) ): history.push('/');
+            console.log(section.from)
         }
     }
     return (
