@@ -37,10 +37,6 @@ const Login = () => {
     }
 
     cookie && (section ? history.push(section.from): history.push('/'));
-    console.log({cookie})
-    console.log({section})
-    console.log({from: section?.from})
-    console.log('section ? history.push(section.from): history.push(/)')
 
     const onSubmit = async (data, e) => {
         const req = await fetch(`${url}/login`, {
@@ -49,7 +45,6 @@ const Login = () => {
             credentials: 'include',
             body: JSON.stringify(data)
         })
-        console.log(req)
         const res = await req.json();
         reset('', {
             keepValues: false,

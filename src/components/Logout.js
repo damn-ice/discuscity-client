@@ -12,17 +12,17 @@ const Logout = () => {
 
     !cookie && history.push('/')
 
-    const { url, setUser } = useUser();
+    const { url } = useUser();
 
     const confirmLogout = async (e, val) => {
         if (val) {
-            setUser(null)
             await fetch(`${url}/logout`, {
                 credentials: 'include',
                 method: 'GET'
             })
             localStorage.removeItem('discuscity-token');
-            history.push('/')
+            // I wanted instant clearing of state ... 
+            window.location.reload()
         } else {
             history.goBack()
         }

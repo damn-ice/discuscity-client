@@ -39,7 +39,7 @@ const Create = () => {
     const {register, handleSubmit, formState: { errors }, reset} = useForm();
 
     const onSubmit = async (data, e) => {
-        if (user){
+        if (user && cookie){
             const newTopic = {
                 // sender will be handled server side... request.user
                 section,

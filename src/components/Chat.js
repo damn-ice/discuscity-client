@@ -29,7 +29,6 @@ const Chat = ({ changeProfile }) => {
         // if (!user) return;
         const newSocket = io(homeUrl)
         newSocket.emit('join', room)
-        console.log(newSocket);
         setSocket(newSocket)
         // close connection if unmounted...
         return () => newSocket.close()
@@ -60,7 +59,7 @@ const Chat = ({ changeProfile }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!user) {
+        if (!user || !cookie) {
             history.push({
                 pathname: '/login',
                 state: {
@@ -106,7 +105,6 @@ const Chat = ({ changeProfile }) => {
 
     const executeScroll = () => {
         setTimeout(() => {
-            console.log(inputRef)
             if (inputRef.current) inputRef.current.scrollIntoView({behavior: 'smooth'})
         }, 1000)
     }
