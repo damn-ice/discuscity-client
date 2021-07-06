@@ -21,7 +21,6 @@ import FilterProvider from './context/FilterProvider';
 // We seriously need to refactor all our fetch requests... 14/5/21
 
 function App() {
-  console.log('live')
   return (
     <UserProvider>
       <Router>
