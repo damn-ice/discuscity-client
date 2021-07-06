@@ -49,6 +49,7 @@ const EditProfile = ({ edit }) => {
             reset('', {
                 keepValues: false,
             })
+            edit(null, true)
             history.push('/profile')
         }        
     }
