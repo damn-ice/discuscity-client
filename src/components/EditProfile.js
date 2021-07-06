@@ -5,7 +5,7 @@ import EmailIcon from '@material-ui/icons/Email';
 import { makeStyles } from '@material-ui/core/styles';
 import { useForm } from "react-hook-form";
 import { useUser } from "../context/UserProvider";
-// import { useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 
 const useStyles = makeStyles(theme => ({
@@ -23,7 +23,7 @@ const EditProfile = ({ edit }) => {
 
     const { url, setUser } = useUser();
 
-    // const history = useHistory()
+    const history = useHistory()
 
     const cookie = localStorage.getItem('discuscity-token')
 
@@ -49,7 +49,7 @@ const EditProfile = ({ edit }) => {
             reset('', {
                 keepValues: false,
             })
-            // history.push('/')
+            history.push('/profile')
         }        
     }
     return (
