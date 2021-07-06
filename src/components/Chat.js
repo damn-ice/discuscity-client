@@ -3,7 +3,7 @@ import Badge from '@material-ui/core/Badge';
 import SendIcon from '@material-ui/icons/Send';
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
-import { Button } from "@material-ui/core";
+import { Button, Input } from "@material-ui/core";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Name from "./Name";
 import { useUser } from "../context/UserProvider";
@@ -231,7 +231,17 @@ const Chat = ({ changeProfile }) => {
                         {/* when the document is done loading it should scroll into view...  */}
                         <div className='form-control' ref={document.readyState === 'complete'? viewRef: null}>
                             <form onSubmit={handleSubmit}>
-                                <input ref={inputRef} type="text" placeholder="Type your message..." value={text} onChange={(e) => setText(e.target.value)} required/>
+                                <Input
+                                defaultValue=''
+                                multiline
+                                rowsMax={7}
+                                required
+                                placeholder="Type your message..."
+                                value={text}
+                                ref={inputRef}
+                                onChange={(e) => setText(e.target.value)}
+                                />
+                                {/* <input ref={inputRef} type="text" placeholder="Type your message..." value={text} onChange={(e) => setText(e.target.value)} required/> */}
                                 <Button onClick={ executeScroll } variant="contained" type='submit' color="secondary" endIcon={<SendIcon />}>
                                     Submit
                                 </Button>
