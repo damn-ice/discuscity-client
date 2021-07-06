@@ -64,7 +64,7 @@ const Chat = ({ changeProfile }) => {
             history.push({
                 pathname: '/login',
                 state: {
-                    from: `${section}/${id}`,
+                    from: `/${section}/${id}`,
                 }
             })
         } else {
