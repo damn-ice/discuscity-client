@@ -232,7 +232,7 @@ const Chat = ({ changeProfile }) => {
                         </div>
                         {/* when the document is done loading it should scroll into view...  */}
                         <div className='form-control' ref={document.readyState === 'complete'? viewRef: null}>
-                            <form onSubmit={handleSubmit}>
+                            <form className="flex" onSubmit={handleSubmit}>
                                 <TextareaAutosize placeholder="Type your message..." minRows={2} maxRows={6} style={{resize: 'none', width: '80%'}} ref={inputRef} value={text} onChange={(e) => setText(e.target.value)} required />
                                 {/* <input ref={inputRef} type="text" placeholder="Type your message..." value={text} onChange={(e) => setText(e.target.value)} required/> */}
                                 <Button onClick={ executeScroll } variant="contained" type='submit' color="secondary" endIcon={<SendIcon />}>
