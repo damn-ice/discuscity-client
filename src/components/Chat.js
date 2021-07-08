@@ -4,6 +4,7 @@ import SendIcon from '@material-ui/icons/Send';
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
 import { Button } from "@material-ui/core";
+import TextareaAutosize from 'react-textarea-autosize';
 import { useCallback, useEffect, useRef, useState } from "react";
 import Name from "./Name";
 import { useUser } from "../context/UserProvider";
@@ -59,33 +60,34 @@ const Chat = ({ changeProfile }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!user || !cookie) {
-            history.push({
-                pathname: '/login',
-                state: {
-                    from: `/${section}/${id}`,
-                }
-            })
-        } else {
-            const post = {           
-                message: text,
-                date: new Date(),
-            }
-            setText('');
-            const req = await fetch(`${url}/section/${section}/${id}/`, {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRFToken": cookie,
-                },
-                credentials: 'include',
-                body: JSON.stringify(post)
-            })
-            const result = await req.json();
-            // emit message to everyone currently in the room...
-            socket.emit('sendMsg', {result, room})
-            setData(result);
-        }
+        // if (!user || !cookie) {
+        //     history.push({
+        //         pathname: '/login',
+        //         state: {
+        //             from: `/${section}/${id}`,
+        //         }
+        //     })
+        // } else {
+        //     const post = {           
+        //         message: text,
+        //         date: new Date(),
+        //     }
+        //     setText('');
+        //     const req = await fetch(`${url}/section/${section}/${id}/`, {
+        //         method: 'POST',
+        //         headers: {
+        //             "Content-Type": "application/json",
+        //             "X-CSRFToken": cookie,
+        //         },
+        //         credentials: 'include',
+        //         body: JSON.stringify(post)
+        //     })
+        //     const result = await req.json();
+        //     // emit message to everyone currently in the room...
+        //     socket.emit('sendMsg', {result, room})
+        //     setData(result);
+        // }
+        console.log(text)
     }
 
     /*
@@ -231,7 +233,8 @@ const Chat = ({ changeProfile }) => {
                         {/* when the document is done loading it should scroll into view...  */}
                         <div className='form-control' ref={document.readyState === 'complete'? viewRef: null}>
                             <form onSubmit={handleSubmit}>
-                                <input ref={inputRef} type="text" placeholder="Type your message..." value={text} onChange={(e) => setText(e.target.value)} required/>
+                                <TextareaAutosize placeholder="Type your message" ref={inputRef} value={text} onChange={(e) => setText(e.target.value)} required />
+                                {/* <input ref={inputRef} type="text" placeholder="Type your message..." value={text} onChange={(e) => setText(e.target.value)} required/> */}
                                 <Button onClick={ executeScroll } variant="contained" type='submit' color="secondary" endIcon={<SendIcon />}>
                                     Submit
                                 </Button>
