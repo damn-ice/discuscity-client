@@ -19,7 +19,7 @@ const Chat = ({ changeProfile }) => {
     const [socket, setSocket] = useState(null);
     const history = useHistory();
     const room = window.location.pathname.toLowerCase();
-    // const cookie = localStorage.getItem('discuscity-token')
+    const cookie = localStorage.getItem('discuscity-token')
     
 
     const { data, setData, isPending, err } = useFetch(`${url}/section/${section}/${id}`)
@@ -60,34 +60,33 @@ const Chat = ({ changeProfile }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // if (!user || !cookie) {
-        //     history.push({
-        //         pathname: '/login',
-        //         state: {
-        //             from: `/${section}/${id}`,
-        //         }
-        //     })
-        // } else {
-        //     const post = {           
-        //         message: text,
-        //         date: new Date(),
-        //     }
-        //     setText('');
-        //     const req = await fetch(`${url}/section/${section}/${id}/`, {
-        //         method: 'POST',
-        //         headers: {
-        //             "Content-Type": "application/json",
-        //             "X-CSRFToken": cookie,
-        //         },
-        //         credentials: 'include',
-        //         body: JSON.stringify(post)
-        //     })
-        //     const result = await req.json();
-        //     // emit message to everyone currently in the room...
-        //     socket.emit('sendMsg', {result, room})
-        //     setData(result);
-        // }
-        console.log(text)
+        if (!user || !cookie) {
+            history.push({
+                pathname: '/login',
+                state: {
+                    from: `/${section}/${id}`,
+                }
+            })
+        } else {
+            const post = {           
+                message: text,
+                date: new Date(),
+            }
+            setText('');
+            const req = await fetch(`${url}/section/${section}/${id}/`, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": cookie,
+                },
+                credentials: 'include',
+                body: JSON.stringify(post)
+            })
+            const result = await req.json();
+            // emit message to everyone currently in the room...
+            socket.emit('sendMsg', {result, room})
+            setData(result);
+        }
     }
 
     /*
