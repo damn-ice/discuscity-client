@@ -19,7 +19,7 @@ const Chat = ({ changeProfile }) => {
     const [socket, setSocket] = useState(null);
     const history = useHistory();
     const room = window.location.pathname.toLowerCase();
-    const cookie = localStorage.getItem('discuscity-token')
+    // const cookie = localStorage.getItem('discuscity-token')
     
 
     const { data, setData, isPending, err } = useFetch(`${url}/section/${section}/${id}`)
