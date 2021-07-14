@@ -30,7 +30,6 @@ const Login = () => {
 
     const history = useHistory();
     const section = history.location.state;
-    section && console.log(section.from)
     const cookie = localStorage.getItem('discuscity-token');
     const [visible, setVisible] = useState(false);
     const handleVisibility = e => {
